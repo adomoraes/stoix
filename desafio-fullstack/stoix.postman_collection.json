@@ -3,9 +3,70 @@
 		"_postman_id": "a8a4e3a0-30f7-4b6a-8b0a-64f7f4a5b6a7",
 		"name": "stoix",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-"description": "Fluxo de testes:\n\n1. **Get Tasks (opcional):** Comece obtendo todas as tarefas para ver o estado inicial. Deve estar vazio ou conter os dados semeados.\n2. **Create Task:** Crie uma nova tarefa.\n3. **Get Tasks:** Obtenha todas as tarefas novamente para ver se a nova tarefa foi adicionada.\n4. **Get Task:** Obtenha a tarefa específica que acabou de ser criada para ver seus detalhes.\n5. **Update Task:** Atualize a tarefa que acabou de ser criada.\n6. **Get Task:** Obtenha a tarefa específica novamente para ver se ela foi atualizada.\n7. **Delete Task:** Exclua a tarefa que foi criada.\n8. **Get Tasks:** Obtenha todas as tarefas novamente para ver se a tarefa foi excluída."
+		"description": "Fluxo de testes:\n\n**Autenticação:**\n1. **Login:** Envie seu e-mail e senha para obter um token de autenticação.\n2. Copie o token recebido para usar nas requisições autenticadas.\n3. **Logout:** Invalide seu token de acesso.\n\n**Tarefas (requer autenticação):**\n1. **Get Tasks (opcional):** Comece obtendo todas as tarefas para ver o estado inicial.\n2. **Create Task:** Crie uma nova tarefa.\n3. **Get Tasks:** Obtenha todas as tarefas novamente para ver se a nova tarefa foi adicionada.\n4. **Get Task:** Obtenha a tarefa específica que acabou de ser criada.\n5. **Update Task:** Atualize a tarefa.\n6. **Get Task:** Obtenha a tarefa específica novamente para confirmar a atualização.\n7. **Delete Task:** Exclua a tarefa.\n8. **Get Tasks:** Obtenha todas as tarefas novamente para confirmar a exclusão."
 	},
 	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Authenticate and receive a token"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						},
+						"description": "Logout and invalidate the token. Requires authentication."
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Get Tasks",
 			"request": {
