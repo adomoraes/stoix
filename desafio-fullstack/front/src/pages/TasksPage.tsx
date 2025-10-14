@@ -20,7 +20,7 @@ export function TasksPage() {
     setLoading(true);
     try {
       const response = await api.get('/api/tasks');
-      setTasks(response.data); // The API returns a direct array
+      setTasks(response.data);
     } catch (error) {
       console.error("Failed to fetch tasks", error);
     } finally {
@@ -29,10 +29,29 @@ export function TasksPage() {
   }, []);
 
   useEffect(() => {
-    if (user) { // Only fetch tasks if the user is loaded
+    if (user) {
       fetchTasks();
     }
   }, [user, fetchTasks]);
+
+  const handleTaskUpdate = async (id: number, completed: boolean) => {
+    const originalTasks = [...tasks];
+    
+    // Optimistic update
+    setTasks(currentTasks =>
+      currentTasks.map(task =>
+        task.id === id ? { ...task, completed } : task
+      )
+    );
+
+    try {
+      await api.put(`/api/tasks/${id}`, { completed });
+    } catch (error) {
+      console.error("Failed to update task", error);
+      // Revert on error
+      setTasks(originalTasks);
+    }
+  };
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-tr from-purple-700 via-pink-500 to-red-500 text-white p-4 sm:p-6 lg:p-8">
@@ -60,10 +79,8 @@ export function TasksPage() {
                 {tasks.length > 0 ? tasks.map(task => (
                   <TaskItem
                     key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    completed={!!task.completed}
+                    task={task}
+                    onTaskUpdated={handleTaskUpdate}
                   />
                 )) : <p>No tasks yet. Add one!</p>}
               </div>
