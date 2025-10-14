@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/users', function () {
+    return response()->json(['users' => \App\Models\User::factory()->count(3)->create()]);
+});
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', function (Request $request) {
