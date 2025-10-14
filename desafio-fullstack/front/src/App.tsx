@@ -3,7 +3,7 @@ import { Router } from "./Router"
 
 export function App() {
 	return (
-		<BrowserRouter>
+		<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 			<main className='pt-16'>
 				<Router />
 			</main>

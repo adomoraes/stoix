@@ -1,9 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
+import { TestPage } from './pages/TestPage'
 
 export function Router() {
   return (
     <Routes>
-      {/* Adicione suas rotas aqui */}
+      <Route path="/test" element={<TestPage />} />
     </Routes>
   )
 }
