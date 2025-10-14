@@ -4,12 +4,12 @@ import { Router } from "./Router"
 
 export function App() {
 	return (
-		<AuthProvider>
-			<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+		<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+			<AuthProvider>
 				<main className='pt-16'>
 					<Router />
 				</main>
-			</BrowserRouter>
-		</AuthProvider>
+			</AuthProvider>
+		</BrowserRouter>
 	)
 }
