@@ -3,7 +3,7 @@
 		"_postman_id": "a8a4e3a0-30f7-4b6a-8b0a-64f7f4a5b6a7",
 		"name": "stoix",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"description": "Fluxo de testes:\n\n**Autenticação:**\n1. **Login:** Envie seu e-mail e senha para obter um token de autenticação.\n2. Copie o token recebido para usar nas requisições autenticadas.\n3. **Logout:** Invalide seu token de acesso.\n\n**Tarefas (requer autenticação):**\n1. **Get Tasks (opcional):** Comece obtendo todas as tarefas para ver o estado inicial.\n2. **Create Task:** Crie uma nova tarefa.\n3. **Get Tasks:** Obtenha todas as tarefas novamente para ver se a nova tarefa foi adicionada.\n4. **Get Task:** Obtenha a tarefa específica que acabou de ser criada.\n5. **Update Task:** Atualize a tarefa.\n6. **Get Task:** Obtenha a tarefa específica novamente para confirmar a atualização.\n7. **Delete Task:** Exclua a tarefa.\n8. **Get Tasks:** Obtenha todas as tarefas novamente para confirmar a exclusão."
+		"description": "Fluxo de testes para a API Stoix.\n\n**Autenticação (Sessão/Cookie):**\n1. **Login:** Envie seu e-mail e senha. O Postman irá armazenar o cookie de sessão automaticamente.\n2. **Get User:** Use este request para verificar se a autenticação foi bem-sucedida e ver os dados do usuário.\n3. **Logout:** Encerre a sessão do usuário.\n\n**Importante:** Após o login, o Postman gerencia o cookie de sessão para você. Todas as chamadas subsequentes para endpoints protegidos (como os de Tarefas) serão autenticadas automaticamente."
 	},
 	"item": [
 		{
@@ -15,29 +15,60 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
 								"key": "Accept",
 								"value": "application/json"
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password\"\n}"
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "user@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/login",
+							"raw": "{{baseUrl}}/api/login",
 							"host": [
-								"{{base_url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"login"
 							]
 						},
-						"description": "Authenticate and receive a token"
+						"description": "Autentica o usuário e inicia uma sessão."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Retorna os dados do usuário autenticado."
 					},
 					"response": []
 				},
@@ -52,138 +83,150 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/logout",
+							"raw": "{{baseUrl}}/api/logout",
 							"host": [
-								"{{base_url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"logout"
 							]
 						},
-						"description": "Logout and invalidate the token. Requires authentication."
+						"description": "Encerra a sessão do usuário."
 					},
 					"response": []
 				}
 			]
 		},
 		{
-			"name": "Get Tasks",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/tasks",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"tasks"
-					]
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Get Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/tasks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							]
+						},
+						"description": "Get all tasks"
+					},
+					"response": []
 				},
-				"description": "Get all tasks"
-			},
-			"response": []
-		},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New Task\",\n    \"description\": \"New Task Description\",\n    \"status\": \"pending\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/tasks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"tasks"
+							]
+						},
+						"description": "Create a new task"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/tasks/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"1"
+							]
+						},
+						"description": "Get a specific task"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Task\",\n    \"description\": \"Updated Task Description\",\n    \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/tasks/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"1"
+							]
+						},
+						"description": "Update a specific task"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/tasks/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"tasks",
+								"1"
+							]
+						},
+						"description": "Delete a specific task"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
 		{
-			"name": "Create Task",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"title\": \"New Task\",\n    \"description\": \"New Task Description\",\n    \"status\": \"pending\"\n}"
-				},
-				"url": {
-					"raw": "{{base_url}}/api/tasks",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"tasks"
-					]
-				},
-				"description": "Create a new task"
-			},
-			"response": []
-		},
-		{
-			"name": "Get Task",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"tasks",
-						"1"
-					]
-				},
-				"description": "Get a specific task"
-			},
-			"response": []
-		},
-		{
-			"name": "Update Task",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"title\": \"Updated Task\",\n    \"description\": \"Updated Task Description\",\n    \"status\": \"completed\"\n}"
-				},
-				"url": {
-					"raw": "{{base_url}}/api/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"tasks",
-						"1"
-					]
-				},
-				"description": "Update a specific task"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Task",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"tasks",
-						"1"
-					]
-				},
-				"description": "Delete a specific task"
-			},
-			"response": []
+			"key": "baseUrl",
+			"value": "http://localhost:8000",
+			"type": "string"
 		}
 	]
 }
