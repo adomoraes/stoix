@@ -23,6 +23,7 @@ export function TasksPage() {
 	const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 	const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
 	const [filterLoading, setFilterLoading] = useState(false);
+	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false);
 
 	const fetchTasks = useCallback(async () => {
 		setLoading(true)
@@ -123,13 +124,32 @@ export function TasksPage() {
 				</header>
 
 				<main className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-					<div className='lg:col-span-1'>
-						<TaskForm onTaskCreated={fetchTasks} />
+					<div className="lg:col-span-1">
+						{/* This button is only visible on mobile */}
+						<div className="lg:hidden text-center mb-4">
+							<button
+								onClick={() => setIsFormVisibleOnMobile(!isFormVisibleOnMobile)}
+								className="relative group w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100"
+							>
+								<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isFormVisibleOnMobile ? "M6 18L18 6M6 6l12 12" : "M12 4v16m8-8H4"} />
+								</svg>
+								{isFormVisibleOnMobile ? 'Fechar' : 'Nova Tarefa'}
+							</button>
+						</div>
+
+						{/* The form container */}
+						<div className={`${isFormVisibleOnMobile ? 'block' : 'hidden'} lg:block`}>
+							<TaskForm onTaskCreated={() => {
+								fetchTasks();
+								setIsFormVisibleOnMobile(false); // Always hide on mobile after creation
+							}} />
+						</div>
 					</div>
 					<div className='lg:col-span-2'>
 						<div className='p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg'>
-							<div className="flex justify-between items-center mb-6">
-								<h2 className='text-2xl font-bold text-white'>
+							<div className="flex flex-col lg:flex-row justify-between lg:items-center mb-6">
+								<h2 className='text-2xl font-bold text-white mb-4 lg:mb-0'>
 									Lista de tarefas
 								</h2>
 								<div className="flex gap-x-2">
