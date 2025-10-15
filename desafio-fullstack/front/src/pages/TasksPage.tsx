@@ -88,6 +88,9 @@ export function TasksPage() {
 		}, 500) // Duration of the animation
 	}
 
+	const pendingTasks = tasks.filter((task) => !task.completed)
+	const completedTasks = tasks.filter((task) => task.completed)
+
 	return (
 		<>
 			<div className='min-h-screen w-full bg-gradient-to-tr from-purple-700 via-pink-500 to-red-500 text-white p-4 sm:p-6 lg:p-8'>
@@ -112,17 +115,46 @@ export function TasksPage() {
 							{loading ? (
 								<p>Carregando tarefas...</p>
 							) : (
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-									{tasks.map((task) => (
-										<TaskItem
-											key={task.id}
-											task={task}
-											onTaskUpdated={handleTaskUpdate}
-											onDeleteRequested={handleDeleteRequested}
-											isDeleting={deletingTaskId === task.id}
-											isJustUpdated={updatedTaskId === task.id}
-										/>
-									))}
+								<div>
+									<h3 className='text-lg font-bold text-white mb-4'>A fazer</h3>
+									{pendingTasks.length === 0 ? (
+										<p className='text-center text-white/80'>
+											Parabéns você está em dia com suas tarefas.
+										</p>
+									) : (
+										<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+											{pendingTasks.map((task) => (
+												<TaskItem
+													key={task.id}
+													task={task}
+													onTaskUpdated={handleTaskUpdate}
+													onDeleteRequested={handleDeleteRequested}
+													isDeleting={deletingTaskId === task.id}
+													isJustUpdated={updatedTaskId === task.id}
+												/>
+											))}
+										</div>
+									)}
+
+									{completedTasks.length > 0 && (
+										<>
+											<h3 className='text-lg font-bold text-white mt-8 mb-4'>
+												Concluídas
+											</h3>
+											<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+												{completedTasks.map((task) => (
+													<TaskItem
+														key={task.id}
+														task={task}
+														onTaskUpdated={handleTaskUpdate}
+														onDeleteRequested={handleDeleteRequested}
+														isDeleting={deletingTaskId === task.id}
+														isJustUpdated={updatedTaskId === task.id}
+													/>
+												))}
+											</div>
+										</>
+									)}
 								</div>
 							)}
 						</div>
