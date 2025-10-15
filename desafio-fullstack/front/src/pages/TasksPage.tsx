@@ -15,51 +15,54 @@ export function TasksPage() {
   const { logout, user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
-  const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
-
-  const fetchTasks = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await api.get('/api/tasks');
-      setTasks(response.data);
-    } catch (error) {
-      console.error("Failed to fetch tasks", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      fetchTasks();
-    }
-  }, [user, fetchTasks]);
-
-  const handleTaskUpdate = async (id: number, completed: boolean) => {
-    const originalTasks = [...tasks];
-    
-    // Optimistic update
-    setTasks(currentTasks =>
-      currentTasks.map(task =>
-        task.id === id ? { ...task, completed } : task
-      )
-    );
-
-    try {
-      await api.put(`/api/tasks/${id}`, { completed });
-    } catch (error) {
-      console.error("Failed to update task", error);
-      // Revert on error
-      setTasks(originalTasks);
-    }
-  };
-
-  const handleDeleteRequested = (task: Task) => {
-    setTaskToDelete(task);
-  };
-
-  const handleDeleteCancel = () => {
+    const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
+    const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
+    const [updatedTaskId, setUpdatedTaskId] = useState<number | null>(null);
+  
+    const fetchTasks = useCallback(async () => {
+      setLoading(true);
+      try {
+        const response = await api.get('/api/tasks');
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Failed to fetch tasks", error);
+      } finally {
+        setLoading(false);
+      }
+    }, []);
+  
+    useEffect(() => {
+      if (user) {
+        fetchTasks();
+      }
+    }, [user, fetchTasks]);
+  
+    const handleTaskUpdate = async (id: number, data: { completed?: boolean; title?: string; description?: string }) => {
+      const originalTasks = [...tasks];
+  
+      setTasks(currentTasks =>
+        currentTasks.map(task =>
+          task.id === id ? { ...task, ...data } : task
+        )
+      );
+  
+      try {
+        await api.put(`/api/tasks/${id}`, data);
+        
+        if ('title' in data || 'description' in data) {
+          setUpdatedTaskId(id);
+          setTimeout(() => setUpdatedTaskId(null), 1000); 
+        }
+      } catch (error) {
+        console.error("Failed to update task", error);
+        setTasks(originalTasks);
+      }
+    };
+  
+    const handleDeleteRequested = (task: Task) => {
+      setTaskToDelete(task);
+    };
+    const handleDeleteCancel = () => {
     setTaskToDelete(null);
   };
 
@@ -113,6 +116,7 @@ export function TasksPage() {
                       onTaskUpdated={handleTaskUpdate}
                       onDeleteRequested={handleDeleteRequested}
                       isDeleting={deletingTaskId === task.id}
+                      isJustUpdated={updatedTaskId === task.id}
                     />
                   ))}
                 </div>
