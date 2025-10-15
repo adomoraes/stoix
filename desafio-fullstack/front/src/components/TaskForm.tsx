@@ -57,9 +57,12 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
         <h2 className="text-2xl font-bold text-white mb-6">Tarefa Criada!</h2>
         <button
           onClick={() => setIsTaskCreated(false)}
-          className='w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'
+          className='relative group w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'
         >
           Cadastrar + tarefas
+          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+            Adicionar mais tarefas
+          </span>
         </button>
       </div>
     );
@@ -106,7 +109,7 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
         <div className='flex justify-center'>
           <button
             type='submit'
-            className='w-auto flex items-center gap-x-2 px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
+            className='relative group w-auto flex items-center gap-x-2 px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-6 w-6'
@@ -121,6 +124,9 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
               />
             </svg>
             Incluir Tarefa
+            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+              Adicionar nova tarefa
+            </span>
           </button>
         </div>
       </form>

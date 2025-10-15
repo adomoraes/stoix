@@ -114,8 +114,11 @@ export function TasksPage() {
 					<h1 className='text-4xl font-bold'>Minhas tarefas</h1>
 					<button
 						onClick={logout}
-						className='px-4 py-2 text-sm font-bold text-purple-700 bg-white rounded-2xl transition-all duration-300 ease-in-out hover:bg-purple-100 hover:scale-105 active:scale-100'>
+						className='relative group px-4 py-2 text-sm font-bold text-purple-700 bg-white rounded-2xl transition-all duration-300 ease-in-out hover:bg-purple-100 hover:scale-105 active:scale-100'>
 						Sair
+						<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+							Fazer logout
+						</span>
 					</button>
 				</header>
 
@@ -132,21 +135,30 @@ export function TasksPage() {
 								<div className="flex gap-x-2">
 									<button
 										onClick={() => setActiveFilter('pending')}
-										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'pending' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'pending' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
 									>
 										A fazer
+										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+											Filtrar por tarefas a fazer
+										</span>
 									</button>
 									<button
 										onClick={() => setActiveFilter('completed')}
-										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'completed' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'completed' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
 									>
 										Concluídas
+										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+											Filtrar por tarefas concluídas
+										</span>
 									</button>
 									<button
 										onClick={() => setActiveFilter('all')}
-										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'all' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'all' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
 									>
 										Todas
+										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+											Mostrar todas as tarefas
+										</span>
 									</button>
 								</div>
 							</div>
@@ -191,13 +203,19 @@ export function TasksPage() {
 						<div className='flex justify-end gap-x-4'>
 							<button
 								onClick={handleDeleteCancel}
-								className='px-6 py-2 font-medium rounded-xl bg-gray-200 text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-300 hover:scale-105 active:scale-100'>
+								className='relative group px-6 py-2 font-medium rounded-xl bg-gray-200 text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-300 hover:scale-105 active:scale-100'>
 								Cancelar
+								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+									Cancelar exclusão
+								</span>
 							</button>
 							<button
 								onClick={handleDeleteConfirmed}
-								className='px-6 py-2 font-bold text-white bg-red-500 rounded-xl transition-all duration-300 ease-in-out hover:bg-red-600 hover:scale-105 active:scale-100'>
+								className='relative group px-6 py-2 font-bold text-white bg-red-500 rounded-xl transition-all duration-300 ease-in-out hover:bg-red-600 hover:scale-105 active:scale-100'>
 								Apagar
+								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+									Confirmar exclusão
+								</span>
 							</button>
 						</div>
 					</div>

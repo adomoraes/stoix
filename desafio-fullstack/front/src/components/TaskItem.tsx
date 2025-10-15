@@ -86,7 +86,7 @@ export function TaskItem({
 					<div className='flex items-center justify-end gap-x-4 mt-6'>
 						<button
 							onClick={handleCancelClick}
-							className='flex items-center gap-x-2 p-2 text-sm font-medium rounded-full bg-gray-500 text-white transition-all duration-300 ease-in-out hover:bg-gray-600 hover:scale-105 active:scale-100'>
+							className='relative group flex items-center gap-x-2 p-2 text-sm font-medium rounded-full bg-gray-500 text-white transition-all duration-300 ease-in-out hover:bg-gray-600 hover:scale-105 active:scale-100'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								className='h-5 w-5'
@@ -100,10 +100,13 @@ export function TaskItem({
 									d='M6 18L18 6M6 6l12 12'
 								/>
 							</svg>
+							<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+								Cancelar edição
+							</span>
 						</button>
 						<button
 							onClick={handleSaveClick}
-							className='flex items-center gap-x-2 p-2 text-sm font-bold rounded-full bg-green-500 text-white transition-all duration-300 ease-in-out hover:bg-green-600 hover:scale-105 active:scale-100'>
+							className='relative group flex items-center gap-x-2 p-2 text-sm font-bold rounded-full bg-green-500 text-white transition-all duration-300 ease-in-out hover:bg-green-600 hover:scale-105 active:scale-100'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								className='h-5 w-5'
@@ -117,6 +120,9 @@ export function TaskItem({
 									d='M5 13l4 4L19 7'
 								/>
 							</svg>
+							<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+								Salvar alterações
+							</span>
 						</button>
 					</div>
 				</>
@@ -127,12 +133,17 @@ export function TaskItem({
 							<h3 className={`text-xl font-bold text-white ${task.completed ? 'line-through' : ''}`}>
 								{task.title}
 							</h3>
-							<input
-								type='checkbox'
-								checked={task.completed}
-								onChange={handleCheckboxChange}
-								className='form-checkbox h-6 w-6 text-purple-500 bg-white/20 border-transparent rounded-md focus:ring-0 cursor-pointer'
-							/>
+							<div className="relative group">
+								<input
+									type='checkbox'
+									checked={task.completed}
+									onChange={handleCheckboxChange}
+									className='form-checkbox h-6 w-6 text-purple-500 bg-white/20 border-transparent rounded-md focus:ring-0 cursor-pointer'
+								/>
+								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+									{task.completed ? 'Marcar como pendente' : 'Marcar como concluída'}
+								</span>
+							</div>
 						</div>
 						<p className={`text-white/80 ${task.completed ? 'line-through' : ''}`}>
 							{task.description}
@@ -142,7 +153,7 @@ export function TaskItem({
 						{!task.completed && (
 							<button
 								onClick={handleEditClick}
-								className='p-2 rounded-full text-white transition-all duration-300 ease-in-out bg-blue-500 hover:bg-blue-600 hover:scale-105 active:scale-100'>
+								className='relative group p-2 rounded-full text-white transition-all duration-300 ease-in-out bg-blue-500 hover:bg-blue-600 hover:scale-105 active:scale-100'>
 								<svg
 									xmlns='http://www.w3.org/2000/svg'
 									className='h-6 w-6'
@@ -156,11 +167,14 @@ export function TaskItem({
 										d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z'
 									/>
 								</svg>
+								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+									Editar tarefa
+								</span>
 							</button>
 						)}
 						<button
 							onClick={() => onDeleteRequested(task)}
-							className='p-2 rounded-full transition-all duration-300 ease-in-out bg-pink-400 text-white hover:bg-pink-500 hover:scale-110 active:scale-100'>
+							className='relative group p-2 rounded-full transition-all duration-300 ease-in-out bg-pink-400 text-white hover:bg-pink-500 hover:scale-110 active:scale-100'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								className='h-6 w-6'
@@ -174,6 +188,9 @@ export function TaskItem({
 									d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
 								/>
 							</svg>
+							<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+								Excluir tarefa
+							</span>
 						</button>
 					</div>
 				</>
