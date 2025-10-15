@@ -66,7 +66,7 @@ export function TaskItem({
 
 	return (
 		<div
-			className={`p-6 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg flex flex-col justify-between transition-all duration-500 ease-in-out ${animationClasses} ${magicAnimationClass}`}>
+			className={`p-6 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg flex flex-col justify-between transition-all duration-500 ease-in-out ${animationClasses} ${magicAnimationClass} ${task.completed ? 'opacity-50' : ''}`}>
 			{isEditing ? (
 				<>
 					<div>
@@ -118,16 +118,13 @@ export function TaskItem({
 								/>
 							</svg>
 						</button>
-					</div>{" "}
+					</div>
 				</>
 			) : (
 				<>
 					<div>
 						<div className='flex items-center justify-between mb-4'>
-							<h3
-								className={`text-xl font-bold text-white ${
-									task.completed ? "line-through" : ""
-								}`}>
+							<h3 className={`text-xl font-bold text-white ${task.completed ? 'line-through' : ''}`}>
 								{task.title}
 							</h3>
 							<input
@@ -137,10 +134,7 @@ export function TaskItem({
 								className='form-checkbox h-6 w-6 text-purple-500 bg-white/20 border-transparent rounded-md focus:ring-0 cursor-pointer'
 							/>
 						</div>
-						<p
-							className={`text-white/80 ${
-								task.completed ? "line-through" : ""
-							}`}>
+						<p className={`text-white/80 ${task.completed ? 'line-through' : ''}`}>
 							{task.description}
 						</p>
 					</div>

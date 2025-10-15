@@ -11,6 +11,8 @@ interface Task {
 	completed: boolean
 }
 
+type FilterType = 'all' | 'pending' | 'completed';
+
 export function TasksPage() {
 	const { logout, user } = useAuth()
 	const [tasks, setTasks] = useState<Task[]>([])
@@ -18,6 +20,9 @@ export function TasksPage() {
 	const [taskToDelete, setTaskToDelete] = useState<Task | null>(null)
 	const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null)
 	const [updatedTaskId, setUpdatedTaskId] = useState<number | null>(null)
+	const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+	const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+	const [filterLoading, setFilterLoading] = useState(false);
 
 	const fetchTasks = useCallback(async () => {
 		setLoading(true)
@@ -36,6 +41,20 @@ export function TasksPage() {
 			fetchTasks()
 		}
 	}, [user, fetchTasks])
+
+	useEffect(() => {
+		setFilterLoading(true);
+		setTimeout(() => {
+			if (activeFilter === 'pending') {
+				setFilteredTasks(tasks.filter(task => !task.completed));
+			} else if (activeFilter === 'completed') {
+				setFilteredTasks(tasks.filter(task => task.completed));
+			} else {
+				setFilteredTasks(tasks);
+			}
+			setFilterLoading(false);
+		}, 300);
+	}, [activeFilter, tasks]);
 
 	const handleTaskUpdate = async (
 		id: number,
@@ -88,9 +107,6 @@ export function TasksPage() {
 		}, 500) // Duration of the animation
 	}
 
-	const pendingTasks = tasks.filter((task) => !task.completed)
-	const completedTasks = tasks.filter((task) => task.completed)
-
 	return (
 		<>
 			<div className='min-h-screen w-full bg-gradient-to-tr from-purple-700 via-pink-500 to-red-500 text-white p-4 sm:p-6 lg:p-8'>
@@ -109,21 +125,42 @@ export function TasksPage() {
 					</div>
 					<div className='lg:col-span-2'>
 						<div className='p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg'>
-							<h2 className='text-2xl font-bold text-white mb-6'>
-								Lista de tarefas
-							</h2>
-							{loading ? (
+							<div className="flex justify-between items-center mb-6">
+								<h2 className='text-2xl font-bold text-white'>
+									Lista de tarefas
+								</h2>
+								<div className="flex gap-x-2">
+									<button
+										onClick={() => setActiveFilter('pending')}
+										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'pending' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+									>
+										A fazer
+									</button>
+									<button
+										onClick={() => setActiveFilter('completed')}
+										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'completed' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+									>
+										Concluídas
+									</button>
+									<button
+										onClick={() => setActiveFilter('all')}
+										className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'all' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
+									>
+										Todas
+									</button>
+								</div>
+							</div>
+							{loading || filterLoading ? (
 								<p>Carregando tarefas...</p>
 							) : (
 								<div>
-									<h3 className='text-lg font-bold text-white mb-4'>A fazer</h3>
-									{pendingTasks.length === 0 ? (
-										<p className='text-center text-white/80'>
-											Parabéns você está em dia com suas tarefas.
+									{filteredTasks.length === 0 ? (
+										<p className="text-center text-white/80">
+											{activeFilter === 'pending' ? 'Parabéns você está em dia com suas tarefas.' : 'Nenhuma tarefa encontrada.'}
 										</p>
 									) : (
 										<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-											{pendingTasks.map((task) => (
+											{filteredTasks.map((task) => (
 												<TaskItem
 													key={task.id}
 													task={task}
@@ -134,26 +171,6 @@ export function TasksPage() {
 												/>
 											))}
 										</div>
-									)}
-
-									{completedTasks.length > 0 && (
-										<>
-											<h3 className='text-lg font-bold text-white mt-8 mb-4'>
-												Concluídas
-											</h3>
-											<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-												{completedTasks.map((task) => (
-													<TaskItem
-														key={task.id}
-														task={task}
-														onTaskUpdated={handleTaskUpdate}
-														onDeleteRequested={handleDeleteRequested}
-														isDeleting={deletingTaskId === task.id}
-														isJustUpdated={updatedTaskId === task.id}
-													/>
-												))}
-											</div>
-										</>
 									)}
 								</div>
 							)}
