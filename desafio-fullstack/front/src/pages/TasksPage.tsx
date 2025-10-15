@@ -166,21 +166,21 @@ export function TasksPage() {
 			{taskToDelete && (
 				<div className='fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50'>
 					<div className='p-8 bg-gray-800 rounded-3xl shadow-lg text-white max-w-sm mx-4'>
-						<h3 className='text-xl font-bold mb-4'>Confirm Deletion</h3>
+						<h3 className='text-xl font-bold mb-4'>Confirmação de exclusão</h3>
 						<p className='text-white/80 mb-6'>
-							Are you sure you want to delete the task "{taskToDelete.title}"?
-							This action cannot be undone.
+							Tem certeza que deseja excluir a tarefa: "{taskToDelete.title}"?
+							Esta ação não tem volta.
 						</p>
 						<div className='flex justify-end gap-x-4'>
 							<button
 								onClick={handleDeleteCancel}
 								className='px-6 py-2 font-medium rounded-xl bg-gray-200 text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-300 hover:scale-105 active:scale-100'>
-								Cancel
+								Cancelar
 							</button>
 							<button
 								onClick={handleDeleteConfirmed}
 								className='px-6 py-2 font-bold text-white bg-red-500 rounded-xl transition-all duration-300 ease-in-out hover:bg-red-600 hover:scale-105 active:scale-100'>
-								Delete
+								Apagar
 							</button>
 						</div>
 					</div>
