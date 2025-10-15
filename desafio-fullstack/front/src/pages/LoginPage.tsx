@@ -69,7 +69,7 @@ export function LoginPage() {
 						</div>
 						<button
 							type='submit'
-							className='w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl hover:opacity-90 transition-opacity'>
+							className='w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
 							Entrar
 						</button>
 					</form>

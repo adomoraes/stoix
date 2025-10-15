@@ -95,7 +95,7 @@ export function TasksPage() {
 					<h1 className='text-4xl font-bold'>Minhas tarefas</h1>
 					<button
 						onClick={logout}
-						className='px-4 py-2 text-sm font-bold bg-white/10 backdrop-blur-lg rounded-2xl hover:bg-white/20 transition-colors'>
+						className='px-4 py-2 text-sm font-bold text-purple-700 bg-white rounded-2xl transition-all duration-300 ease-in-out hover:bg-purple-100 hover:scale-105 active:scale-100'>
 						Sair
 					</button>
 				</header>
@@ -142,12 +142,12 @@ export function TasksPage() {
 						<div className='flex justify-end gap-x-4'>
 							<button
 								onClick={handleDeleteCancel}
-								className='px-6 py-2 font-medium rounded-xl bg-white/10 hover:bg-white/20 transition-colors'>
+								className='px-6 py-2 font-medium rounded-xl bg-gray-200 text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-300 hover:scale-105 active:scale-100'>
 								Cancel
 							</button>
 							<button
 								onClick={handleDeleteConfirmed}
-								className='px-6 py-2 font-bold text-white bg-red-500 hover:bg-red-600 rounded-xl transition-colors'>
+								className='px-6 py-2 font-bold text-white bg-red-500 rounded-xl transition-all duration-300 ease-in-out hover:bg-red-600 hover:scale-105 active:scale-100'>
 								Delete
 							</button>
 						</div>

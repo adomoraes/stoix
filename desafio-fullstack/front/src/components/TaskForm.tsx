@@ -15,7 +15,7 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
 		setError(null)
 
 		if (!title) {
-			setError("Title is required.")
+			setError("Título obrigatório")
 			return
 		}
 
@@ -68,11 +68,26 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
 						className='w-full px-4 py-3 bg-white/20 text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 border-transparent placeholder-white'
 						placeholder='Descrever a tarefa detalhadamente...'></textarea>
 				</div>
-				<button
-					type='submit'
-					className='w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl hover:opacity-90 transition-opacity'>
-					Incluir Tarefa
-				</button>
+				<div className='flex justify-center'>
+					<button
+						type='submit'
+						className='w-auto flex items-center gap-x-2 px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							className='h-6 w-6'
+							fill='none'
+							viewBox='0 0 24 24'
+							stroke='currentColor'>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M12 4v16m8-8H4'
+							/>
+						</svg>
+						Incluir Tarefa
+					</button>
+				</div>{" "}
 			</form>
 		</div>
 	)
