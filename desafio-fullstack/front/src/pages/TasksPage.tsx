@@ -166,7 +166,7 @@ export function TasksPage() {
 						<div
 							className={`${
 								isFormVisibleOnMobile ? "block" : "hidden"
-							} lg:block`}>
+							} lg:block lg:sticky lg:top-24 transition-all duration-300 ease-in-out`}>
 							<TaskForm
 								onTaskCreated={() => {
 									fetchTasks()
