@@ -3,9 +3,10 @@ import api from '../services/api';
 
 interface TaskFormProps {
   onTaskCreated: () => void; // Callback to refresh the list
+  onSuccess: () => void;
 }
 
-export function TaskForm({ onTaskCreated }: TaskFormProps) {
+export function TaskForm({ onTaskCreated, onSuccess }: TaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -16,12 +17,13 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
     if (isTaskCreated) {
       timer = setTimeout(() => {
         setIsTaskCreated(false);
+        onSuccess();
       }, 5000);
     }
     return () => {
       clearTimeout(timer);
     };
-  }, [isTaskCreated]);
+  }, [isTaskCreated, onSuccess]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +58,10 @@ export function TaskForm({ onTaskCreated }: TaskFormProps) {
         </div>
         <h2 className="text-2xl font-bold text-white mb-6">Tarefa Criada!</h2>
         <button
-          onClick={() => setIsTaskCreated(false)}
+          onClick={() => {
+              setIsTaskCreated(false);
+              onSuccess();
+          }}
           className='relative group w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'
         >
           Cadastrar + tarefas

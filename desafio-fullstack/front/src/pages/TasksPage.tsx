@@ -11,7 +11,7 @@ interface Task {
 	completed: boolean
 }
 
-type FilterType = 'all' | 'pending' | 'completed';
+type FilterType = "all" | "pending" | "completed"
 
 export function TasksPage() {
 	const { logout, user } = useAuth()
@@ -20,10 +20,10 @@ export function TasksPage() {
 	const [taskToDelete, setTaskToDelete] = useState<Task | null>(null)
 	const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null)
 	const [updatedTaskId, setUpdatedTaskId] = useState<number | null>(null)
-	const [activeFilter, setActiveFilter] = useState<FilterType>('all');
-	const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-	const [filterLoading, setFilterLoading] = useState(false);
-	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false);
+	const [activeFilter, setActiveFilter] = useState<FilterType>("all")
+	const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
+	const [filterLoading, setFilterLoading] = useState(false)
+	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false)
 
 	const fetchTasks = useCallback(async () => {
 		setLoading(true)
@@ -44,18 +44,18 @@ export function TasksPage() {
 	}, [user, fetchTasks])
 
 	useEffect(() => {
-		setFilterLoading(true);
+		setFilterLoading(true)
 		setTimeout(() => {
-			if (activeFilter === 'pending') {
-				setFilteredTasks(tasks.filter(task => !task.completed));
-			} else if (activeFilter === 'completed') {
-				setFilteredTasks(tasks.filter(task => task.completed));
+			if (activeFilter === "pending") {
+				setFilteredTasks(tasks.filter((task) => !task.completed))
+			} else if (activeFilter === "completed") {
+				setFilteredTasks(tasks.filter((task) => task.completed))
 			} else {
-				setFilteredTasks(tasks);
+				setFilteredTasks(tasks)
 			}
-			setFilterLoading(false);
-		}, 300);
-	}, [activeFilter, tasks]);
+			setFilterLoading(false)
+		}, 300)
+	}, [activeFilter, tasks])
 
 	const handleTaskUpdate = async (
 		id: number,
@@ -117,66 +117,94 @@ export function TasksPage() {
 						onClick={logout}
 						className='relative group px-4 py-2 text-sm font-bold text-purple-700 bg-white rounded-2xl transition-all duration-300 ease-in-out hover:bg-purple-100 hover:scale-105 active:scale-100'>
 						Sair
-						<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+						<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 							Fazer logout
 						</span>
 					</button>
 				</header>
 
 				<main className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-					<div className="lg:col-span-1">
+					<div className='lg:col-span-1'>
 						{/* This button is only visible on mobile */}
-						<div className="lg:hidden text-center mb-4">
+						<div className='lg:hidden text-center mb-4'>
 							<button
 								onClick={() => setIsFormVisibleOnMobile(!isFormVisibleOnMobile)}
-								className="relative group w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100"
-							>
-								<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isFormVisibleOnMobile ? "M6 18L18 6M6 6l12 12" : "M12 4v16m8-8H4"} />
+								className='relative group w-auto flex items-center gap-x-2 mx-auto px-4 py-3 text-lg font-bold text-white bg-purple-500 hover:bg-purple-600 rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									className='h-6 w-6'
+									fill='none'
+									viewBox='0 0 24 24'
+									stroke='currentColor'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										strokeWidth={2}
+										d={
+											isFormVisibleOnMobile
+												? "M6 18L18 6M6 6l12 12"
+												: "M12 4v16m8-8H4"
+										}
+									/>
 								</svg>
-								{isFormVisibleOnMobile ? 'Fechar' : 'Nova Tarefa'}
+								{isFormVisibleOnMobile ? "Fechar" : "Nova Tarefa"}
 							</button>
 						</div>
 
 						{/* The form container */}
-						<div className={`${isFormVisibleOnMobile ? 'block' : 'hidden'} lg:block`}>
-							<TaskForm onTaskCreated={() => {
-								fetchTasks();
-								setIsFormVisibleOnMobile(false); // Always hide on mobile after creation
-							}} />
+						<div
+							className={`${
+								isFormVisibleOnMobile ? "block" : "hidden"
+							} lg:block`}>
+							<TaskForm
+								onTaskCreated={() => {
+									fetchTasks()
+									setIsFormVisibleOnMobile(true)
+								}}
+								onSuccess={() => {}}
+							/>
 						</div>
 					</div>
 					<div className='lg:col-span-2'>
 						<div className='p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg'>
-							<div className="flex flex-col lg:flex-row justify-between lg:items-center mb-6">
+							<div className='flex flex-col lg:flex-row justify-between lg:items-center mb-6'>
 								<h2 className='text-2xl font-bold text-white mb-4 lg:mb-0'>
 									Lista de tarefas
 								</h2>
-								<div className="flex gap-x-2">
+								<div className='flex gap-x-2'>
 									<button
-										onClick={() => setActiveFilter('pending')}
-										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'pending' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
-									>
+										onClick={() => setActiveFilter("pending")}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${
+											activeFilter === "pending"
+												? "bg-green-500 text-white"
+												: "bg-gray-500 text-white/70"
+										}`}>
 										A fazer
-										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Filtrar por tarefas a fazer
 										</span>
 									</button>
 									<button
-										onClick={() => setActiveFilter('completed')}
-										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'completed' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
-									>
+										onClick={() => setActiveFilter("completed")}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${
+											activeFilter === "completed"
+												? "bg-green-500 text-white"
+												: "bg-gray-500 text-white/70"
+										}`}>
 										Concluídas
-										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Filtrar por tarefas concluídas
 										</span>
 									</button>
 									<button
-										onClick={() => setActiveFilter('all')}
-										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${activeFilter === 'all' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white/70'}`}
-									>
+										onClick={() => setActiveFilter("all")}
+										className={`relative group px-3 py-1 text-sm font-medium rounded-full transition-colors ${
+											activeFilter === "all"
+												? "bg-green-500 text-white"
+												: "bg-gray-500 text-white/70"
+										}`}>
 										Todas
-										<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Mostrar todas as tarefas
 										</span>
 									</button>
@@ -187,8 +215,10 @@ export function TasksPage() {
 							) : (
 								<div>
 									{filteredTasks.length === 0 ? (
-										<p className="text-center text-white/80">
-											{activeFilter === 'pending' ? 'Parabéns você está em dia com suas tarefas.' : 'Nenhuma tarefa encontrada.'}
+										<p className='text-center text-white/80'>
+											{activeFilter === "pending"
+												? "Parabéns você está em dia com suas tarefas."
+												: "Nenhuma tarefa encontrada."}
 										</p>
 									) : (
 										<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -225,7 +255,7 @@ export function TasksPage() {
 								onClick={handleDeleteCancel}
 								className='relative group px-6 py-2 font-medium rounded-xl bg-gray-200 text-gray-800 transition-all duration-300 ease-in-out hover:bg-gray-300 hover:scale-105 active:scale-100'>
 								Cancelar
-								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+								<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 									Cancelar exclusão
 								</span>
 							</button>
@@ -233,7 +263,7 @@ export function TasksPage() {
 								onClick={handleDeleteConfirmed}
 								className='relative group px-6 py-2 font-bold text-white bg-red-500 rounded-xl transition-all duration-300 ease-in-out hover:bg-red-600 hover:scale-105 active:scale-100'>
 								Apagar
-								<span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2">
+								<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 									Confirmar exclusão
 								</span>
 							</button>
