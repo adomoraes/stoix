@@ -26,7 +26,9 @@ export function LoginPage() {
 		<div className='min-h-screen w-full bg-gradient-to-tr from-purple-700 via-pink-500 to-red-500 flex items-center justify-center p-4'>
 			<div className='w-full max-w-md'>
 				<div className='p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg text-white'>
-					<h1 className='text-4xl font-bold text-center mb-2'>ToDo List App</h1>
+					<h1 className='text-4xl font-bold text-center mb-2'>
+						Lista de Tarefas
+					</h1>
 					<p className='text-center text-white/80 mb-8'>
 						Entre com seus dados para acessar a lista de tarefas.
 					</p>
@@ -69,8 +71,11 @@ export function LoginPage() {
 						</div>
 						<button
 							type='submit'
-							className='w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
+							className='relative group w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
 							Entrar
+							<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
+								Acessar sua conta
+							</span>
 						</button>
 					</form>
 				</div>
