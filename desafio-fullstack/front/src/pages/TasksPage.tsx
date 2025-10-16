@@ -24,6 +24,23 @@ export function TasksPage() {
 	const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
 	const [filterLoading, setFilterLoading] = useState(false)
 	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false)
+	const [isFormSticky, setIsFormSticky] = useState(false)
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 200) {
+				setTimeout(() => setIsFormSticky(true), 500)
+			} else {
+				setIsFormSticky(false)
+			}
+		}
+
+		window.addEventListener("scroll", handleScroll)
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll)
+		}
+	}, [])
 
 	// Calcula as contagens de tarefas de forma otimizada
 	const pendingCount = useMemo(
@@ -164,9 +181,7 @@ export function TasksPage() {
 
 						{/* The form container */}
 						<div
-							className={`${
-								isFormVisibleOnMobile ? "block" : "hidden"
-							} lg:block lg:sticky lg:top-24 transition-all duration-300 ease-in-out`}>
+							className={`${isFormVisibleOnMobile ? "block" : "hidden"} lg:block ${isFormSticky ? "lg:sticky lg:top-24 animate-float animate-slide-down" : "lg:translate-y-0"} transition-all duration-500 ease-in-out`}>
 							<TaskForm
 								onTaskCreated={() => {
 									fetchTasks()
