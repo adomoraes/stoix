@@ -25,6 +25,11 @@ export function TasksPage() {
 	const [filterLoading, setFilterLoading] = useState(false)
 	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false)
 	const [isFormSticky, setIsFormSticky] = useState(false)
+	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
+
+	const handleSortToggle = () => {
+		setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"))
+	}
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -74,16 +79,26 @@ export function TasksPage() {
 	useEffect(() => {
 		setFilterLoading(true)
 		setTimeout(() => {
+			let filtered = tasks
+
 			if (activeFilter === "pending") {
-				setFilteredTasks(tasks.filter((task) => !task.completed))
+				filtered = tasks.filter((task) => !task.completed)
 			} else if (activeFilter === "completed") {
-				setFilteredTasks(tasks.filter((task) => task.completed))
-			} else {
-				setFilteredTasks(tasks)
+				filtered = tasks.filter((task) => task.completed)
 			}
+
+			const sorted = [...filtered].sort((a, b) => {
+				if (sortOrder === "asc") {
+					return a.id - b.id
+				} else {
+					return b.id - a.id
+				}
+			})
+
+			setFilteredTasks(sorted)
 			setFilterLoading(false)
 		}, 300)
-	}, [activeFilter, tasks])
+	}, [activeFilter, tasks, sortOrder])
 
 	const handleTaskUpdate = async (
 		id: number,
@@ -181,7 +196,13 @@ export function TasksPage() {
 
 						{/* The form container */}
 						<div
-							className={`${isFormVisibleOnMobile ? "block" : "hidden"} lg:block ${isFormSticky ? "lg:sticky lg:top-24 animate-float animate-slide-down" : "lg:translate-y-0"} transition-all duration-500 ease-in-out`}>
+							className={`${
+								isFormVisibleOnMobile ? "block" : "hidden"
+							} lg:block ${
+								isFormSticky
+									? "lg:sticky lg:top-24 animate-float animate-slide-down"
+									: "lg:translate-y-0"
+							} transition-all duration-500 ease-in-out`}>
 							<TaskForm
 								onTaskCreated={() => {
 									fetchTasks()
@@ -194,9 +215,33 @@ export function TasksPage() {
 					<div className='lg:col-span-2'>
 						<div className='p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-lg'>
 							<div className='flex flex-col lg:flex-row justify-between lg:items-center mb-6'>
-								<h2 className='text-2xl font-bold text-white mb-4 lg:mb-0'>
-									Lista de tarefas
-								</h2>
+								<div className='flex items-center gap-x-4'>
+									<h2 className='text-2xl font-bold text-white mb-4 lg:mb-0'>
+										Lista de tarefas
+									</h2>
+									<button onClick={handleSortToggle} className='relative group'>
+										<svg
+											xmlns='http://www.w3.org/2000/svg'
+											className={`h-6 w-6 text-white transition-transform duration-300 ${
+												sortOrder === "asc" ? "rotate-180" : ""
+											}`}
+											fill='none'
+											viewBox='0 0 24 24'
+											stroke='currentColor'>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												strokeWidth={2}
+												d='M3 4h13M3 8h9m-9 4h6m4 0l4 4m0 0l4-4m-4 4v-8'
+											/>
+										</svg>
+										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
+											{sortOrder === "asc"
+												? "Mais antigas criadas"
+												: "Mais recentes criadas"}
+										</span>
+									</button>
+								</div>
 								<div className='flex gap-x-2'>
 									<button
 										onClick={() => setActiveFilter("pending")}
