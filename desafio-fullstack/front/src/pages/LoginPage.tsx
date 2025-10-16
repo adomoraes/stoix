@@ -71,7 +71,7 @@ export function LoginPage() {
 						</div>
 						<button
 							type='submit'
-							className='relative group w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
+							className='relative group w-full py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-100'>
 							Entrar
 							<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 								Acessar sua conta
