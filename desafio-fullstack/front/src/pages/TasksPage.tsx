@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import { TaskForm } from "../components/TaskForm"
 import { TaskItem } from "../components/TaskItem"
@@ -24,6 +24,17 @@ export function TasksPage() {
 	const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
 	const [filterLoading, setFilterLoading] = useState(false)
 	const [isFormVisibleOnMobile, setIsFormVisibleOnMobile] = useState(false)
+
+	// Calcula as contagens de tarefas de forma otimizada
+	const pendingCount = useMemo(
+		() => tasks.filter((task) => !task.completed).length,
+		[tasks]
+	)
+	const completedCount = useMemo(
+		() => tasks.filter((task) => task.completed).length,
+		[tasks]
+	)
+	const allCount = useMemo(() => tasks.length, [tasks])
 
 	const fetchTasks = useCallback(async () => {
 		setLoading(true)
@@ -179,7 +190,7 @@ export function TasksPage() {
 												? "bg-green-500 text-white"
 												: "bg-gray-500 text-white/70"
 										}`}>
-										A fazer
+										A fazer ({pendingCount})
 										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Filtrar por tarefas a fazer
 										</span>
@@ -191,7 +202,7 @@ export function TasksPage() {
 												? "bg-green-500 text-white"
 												: "bg-gray-500 text-white/70"
 										}`}>
-										Concluídas
+										Concluídas ({completedCount})
 										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Filtrar por tarefas concluídas
 										</span>
@@ -203,7 +214,7 @@ export function TasksPage() {
 												? "bg-green-500 text-white"
 												: "bg-gray-500 text-white/70"
 										}`}>
-										Todas
+										Todas ({allCount})
 										<span className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2'>
 											Mostrar todas as tarefas
 										</span>
